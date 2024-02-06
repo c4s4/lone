@@ -27,22 +27,20 @@ Otherwise, you can download latest binary archive at <https://github.com/c4s4/lo
 
 ## Usage
 
-To ensure that command *cmd args* only runs once at a time, you would type:
+To ensure that command *command args...* only runs once at a time, you would type:
 
 ```bash
-lone 12345 cmd args
+lone 1234 cmd args
 ```
 
 Where:
 
-- *12345* is a port number that should be the same for given command. Must be
-  greater than 1024 if not running as root.
-- *cmd args* is the command to run with arguments.
+- *1234* is a port number that should be the same to given command won't run twice at the same time. For instance, if you run command with port *1234* and *2345*, *lone* won't prevent second instance from running as ports are different. Port must be greater than *1024* if not running as root.
+- *cmd args* is the command to run with its arguments.
 
 This command will:
 
-- Open a server socket on given port *12345*. So that if another lone command
-  is already listening this port, this will fail.
+- Open a server socket on given port *1234*. So that if another lone command is already listening this port, this will fail.
 - Run given command.
 - Release the port when done.
 
@@ -51,9 +49,17 @@ This command will:
 To run command in a shell, you would type:
 
 ```bash
-$ lone --shell 1234 'cmd args...'
+$ lone --shell 1234 'command args...'
 ```
 
-In this case, command `cmd args...` will be run in a shell. On Unix, *lone* will run command in a shell with `sh -c command` and `cmd /c command` on Windows.
+In this case, command `cmd args...` will be run in a shell. This enables environment variables evaluation. For instance:
+
+```bash
+$ TEST=test lone 1234 echo $TEST
+$ TEST=test lone --shell 1234 'echo $TEST'
+test
+```
+
+On Unix, *lone* will run command in a shell with `sh -c command args...` and `cmd /c command args...` on Windows.
 
 *Enjoy!*
