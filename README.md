@@ -46,4 +46,14 @@ This command will:
 - Run given command.
 - Release the port when done.
 
+## Shell
+
+To run command in a shell, you would type:
+
+```bash
+$ lone --shell 1234 'cmd args...'
+```
+
+In this case, command `cmd args...` will be run in a shell. On Unix, *lone* will run command in a shell with `sh -c command` and `cmd /c command` on Windows.
+
 *Enjoy!*
