@@ -17,6 +17,7 @@ struct Cli {
     #[arg(short, long, default_value_t = false)]
     shell: bool,
     /// The port to use
+    #[arg(short, long, default_value_t = 1234)]
     port: u16,
     /// The command to run
     cmd: Vec<String>,
@@ -38,15 +39,14 @@ fn main() {
     let mut address = String::from("127.0.0.1:");
     address.push_str(&args.port.to_string());
     let result = TcpListener::bind(address);
-    if result.is_err(){
+    if result.is_err() {
         eprintln!("ERROR: port {:?} already in use", args.port);
         process::exit(1);
     }
     // run listener in a separate thread
     thread::spawn(move || {
         let listener = result.unwrap();
-        for _ in listener.incoming() {
-        }
+        for _ in listener.incoming() {}
     });
     if args.shell {
         // run command
